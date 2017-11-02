@@ -20,4 +20,4 @@ All you need is to import a csv file with the structure below and feed it to the
 
 An implementation of one evolutionary algorithm is project HelloDarwin, which extends the Parrot framework, by making it mutable and shapeshifting. 
 
-These tools were built during a  research project that aimed to find the most efficient network configuration to solve different kind of problems, among which time series forecasting. 
+These tools were built during a  research project that aimed to find the most efficient network configuration to solve different kinds of problems, among which time series forecasting. 
