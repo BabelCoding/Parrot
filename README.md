@@ -1,23 +1,22 @@
-![logoparrot](https://user-images.githubusercontent.com/21087227/32345744-078f0daa-c003-11e7-84ee-b7242ba06ee6.png)
-
+![title](https://user-images.githubusercontent.com/21087227/32349893-81e07dd4-c010-11e7-9742-8289f9285bb1.png)
 
 Project Parrot is an object-oriented implementation of a Neural Network, trainable by backpropagation. The network structure is defined by a tuple of parameters contained in the class DNA, which makes it conveniently combinable with evolutionary algorithms. 
 
 The network structure can be set up with very few intuitive commads:
 
-![1](https://user-images.githubusercontent.com/21087227/32345566-7a91cfb4-c002-11e7-9f05-a11ea82f676a.png)
+![1](https://user-images.githubusercontent.com/21087227/32349904-8878ceda-c010-11e7-87a6-df11f69ec4e6.png)
+
+The network can then be trained saved and exported. The main.java contains a full example of all the methods available to pull the data, customize the structure, train the network, save results and export and the network itself. 
 
 
-
-
-The main contains a working example with all the methods available to pull the data, customize the structure, train the network export and save results and the network itself. 
-
-
-
-#Note on the data structure: 
+## Note on the data structure: 
+All you need is to import a csv file with the structure below and feed it to the network:
 
 ![2](https://user-images.githubusercontent.com/21087227/32345507-5289e5e2-c002-11e7-9bc5-51ba7a5754fc.PNG)
 
+
+
+--- 
 
 An implementation of one evolutionary algorithm is project HelloDarwin, which extends the Parrot framework, by making it mutable and shapeshifting. 
 
