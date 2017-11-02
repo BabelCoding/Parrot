@@ -4,7 +4,7 @@ Project Parrot is an object-oriented implementation of a Neural Network, trainab
 
 The network structure can be set up with very few intuitive commads:
 
-![1](https://user-images.githubusercontent.com/21087227/32350382-23398e22-c012-11e7-9eaf-e926dd777651.png)
+![1](https://user-images.githubusercontent.com/21087227/32351006-f523ba7e-c013-11e7-8bd0-8d7adc8f6279.png)
 
 The network can then be trained saved and exported. The main.java contains a full example of all the methods available to pull the data, customize the structure, train the network, save results and export and the network itself. 
 
