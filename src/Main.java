@@ -10,6 +10,8 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
+		//Parrot Example
+		
 		String  csvPath = "E:\\Desktop\\test7.csv";
 		
         //load dataset
