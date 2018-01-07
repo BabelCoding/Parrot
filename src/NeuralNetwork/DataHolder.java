@@ -3,17 +3,17 @@ package NeuralNetwork;
 
 public class DataHolder {
 	
-	 public double [][] trainingInputs;
-	 public double [][] trainingOuputs;
-	 public double [][] testingInputs;
-	 public double [][] testingOuputs;
+	 double [][] trainingInputs;
+	 double [][] trainingOuputs;
+	 double [][] testingInputs;
+	 double [][] testingOutputs;
 	 
 	 //data sections
-	 public int inputCount;
-	 public int outputCount;
-	 public int trainingSetSize;
-	 public int testingSetSize;
-	 public int recordCount;
+	 int inputCount;
+	 int outputCount;
+	 int trainingSetSize;
+	 int testingSetSize;
+	 int recordCount;
 	 
 	 
 	public  DataHolder(int inputCount, int outputCount, int trainingSetSize, int records){
@@ -29,76 +29,79 @@ public class DataHolder {
 		trainingInputs= new double[trainingSetSize][inputCount];
 		trainingOuputs=new double[trainingSetSize][inputCount];
 		testingInputs=new double[records-trainingSetSize][inputCount];
-		testingOuputs=new double[records-trainingSetSize][outputCount];
+		testingOutputs=new double[records-trainingSetSize][outputCount];
 	 
 		
 	}//constructor
 
-	
-	public void  setTrainingInputs(double[][] yourArray, int records){
+	public void  setTrainingInputs(double[][] yourArray){
 		
+		//update structure
+		this.inputCount=yourArray[0].length;
+		this.trainingSetSize=yourArray.length;
+		this.recordCount = this.trainingSetSize + this.testingSetSize;
+		
+		//update trainingSet
 		this.trainingInputs=null;
-		this.trainingInputs=new double [records][yourArray[0].length];
-		
-		for(int r =0; r<records;r++ ){
-			for (int i=0; i<yourArray[0].length; i++){
-				this.trainingInputs[r][i]=yourArray[r][i];
-			}//for each value		
-		}//for each record
-		
+		this.trainingInputs= yourArray;
 		
 	}//end set trainingInputs
 	
-	public void  setTrainingOutputs(double[][] yourArray, int records){
+	public void  setTrainingOutputs(double[][] yourArray){
 		
+		//update structure
+		this.outputCount=yourArray[0].length;
+		this.trainingSetSize=yourArray.length;
+		this.recordCount = this.trainingSetSize + this.testingSetSize;
+		
+		//update trainingSet 
 		this.trainingOuputs=null;
-		this.trainingOuputs=new double [records][yourArray[0].length];
-		
-		for(int r =0; r<records;r++ ){
-			for (int i=0; i<yourArray[0].length; i++){
-				this.trainingOuputs[r][i]=yourArray[r][i];
-			}//for each value		
-		}//for each record
-		
-		
+		this.trainingOuputs=yourArray;
+			
 	}//end set trainingOutputs
 	
-	public void  setTestingInputs(double[][] yourArray, int records){
+	public void  setTestingInputs(double[][] yourArray){
 		
+		//update structure
+		this.testingSetSize=yourArray.length;
+		this.recordCount = this.trainingSetSize + this.testingSetSize;
+		
+		
+		//update testing set 
 		this.testingInputs=null;
-		this.testingInputs=new double [records][yourArray[0].length];
-		
-		for(int r =0; r<records;r++ ){
-			for (int i=0; i<yourArray[0].length; i++){
-				this.testingInputs[r][i]=yourArray[r][i];
-			}//for each value		
-		}//for each record
-		
+		this.testingInputs=yourArray;
 		
 	}//end set testingInputs
 	
-	public void  setTestingOutputs(double[][] yourArray, int records){
+	public void  setTestingOutputs(double[][] yourArray){
 		
-		this.testingOuputs=null;
-		this.testingOuputs=new double [records][yourArray[0].length];
+		//update structure
+		this.testingSetSize=yourArray.length;
+		this.recordCount = this.trainingSetSize + this.testingSetSize;
 		
-		for(int r =0; r<records;r++ ){
-			for (int i=0; i<yourArray[0].length; i++){
-				this.testingOuputs[r][i]=yourArray[r][i];
-			}//for each value		
-		}//for each record
 		
+		//update testing set
+		this.testingOutputs=null;
+		this.testingOutputs=yourArray;
 		
 	}//end set trainingOutputs
 	
-	public void refresh(){
+	//get methods
+	public  double [][] gettrainingInputs(){return this.trainingInputs;}
+	public  double [][] gettrainingOuputs(){return this.trainingOuputs;}	
+	public  double [][] gettestingInputs(){return this.testingInputs;}
+	public  double [][] gettestingOutputs(){return this.testingOutputs;} 
+	
+	public int countInput() {return this.inputCount;}
+	public int countOutput() {return this.outputCount;}
+	public int getTrainingSetSize() {return this.trainingSetSize;}
+	public int getTestingSetSize() {return this.testingSetSize;}
+	
+	
+	//debug
+	public void printStructure() {
 		
-		inputCount=this.trainingInputs[0].length;
-		outputCount=this.trainingOuputs[0].length;
-		trainingSetSize=this.trainingInputs.length;
-		recordCount=this.trainingInputs.length+this.testingOuputs.length;
-		this.testingSetSize= this.recordCount-this.trainingSetSize;
-		
+		System.out.println("Dataset structure: "+inputCount+" input" + " and "+this.outputCount+" output. Training set is "+this.trainingSetSize+" whereas "+this.testingSetSize+" records + are for testing. Total:"+this.recordCount+" records)");
 	}
 	
 }

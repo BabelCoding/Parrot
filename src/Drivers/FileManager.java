@@ -172,9 +172,14 @@ public class FileManager {
 	
 	public DataHolder getDatafile(String filename, int inputCount, int outputCount, int trainingSetSize){
 		
-		DataHolder data = new DataHolder(inputCount, outputCount, trainingSetSize, this.countRecords(filename));
-		 
+		int records = this.countRecords(filename);
+				
 		//records
+		double [][] trainingInputs = new double [trainingSetSize][inputCount];
+		double [][] trainingOuputs = new double [trainingSetSize][outputCount]; 
+		double [][] testingInputs =new double [records-trainingSetSize][inputCount];
+		double [][] testingOuputs = new double [records-trainingSetSize][outputCount];
+		
 		String currentLine;
 		String[] stringArray;
 		int r=0;
@@ -206,15 +211,15 @@ public class FileManager {
 						if(r-1<trainingSetSize){ 	// ... IF TRAINING DATA
 							
 							if(i<inputCount) 	// ... if inputSection
-								data.trainingInputs[r-1][i]=Double.parseDouble(stringArray[i]);
+								trainingInputs[r-1][i]=Double.parseDouble(stringArray[i]);
 							else				// ... if outputSection
-								data.trainingOuputs[r-1][i-inputCount]=Double.parseDouble(stringArray[i]);
+								trainingOuputs[r-1][i-inputCount]=Double.parseDouble(stringArray[i]);
 							
 						}else{						// ... IF TESTING DATA
 							if(i<inputCount) 	// ... if inputSection
-								data.testingInputs[r-1-trainingSetSize][i]=Double.parseDouble(stringArray[i]);
+								testingInputs[r-1-trainingSetSize][i]=Double.parseDouble(stringArray[i]);
 							else				// ... if outputSection
-								data.testingOuputs[r-1-trainingSetSize][i-inputCount]=Double.parseDouble(stringArray[i]);
+								testingOuputs[r-1-trainingSetSize][i-inputCount]=Double.parseDouble(stringArray[i]);
 						}//end if testing or training
 					}// end for each value
 					
@@ -224,6 +229,13 @@ public class FileManager {
 				r++; // next record
 			}//end of file
 			br.close();
+			
+			
+			DataHolder data = new DataHolder(inputCount, outputCount, trainingSetSize, records );
+			data.setTrainingInputs(trainingInputs);
+			data.setTrainingOutputs(trainingOuputs);
+			data.setTestingInputs(testingInputs);
+			data.setTestingOutputs(testingOuputs);
 			return data;
 			
 		}catch(IOException e) {e.printStackTrace(); return null;}

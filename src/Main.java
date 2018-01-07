@@ -48,12 +48,12 @@ public class Main {
     	
     
     	//test the network with the data provided before or from any other data source (inputs[][], ouputs[][], records)
-    	double performance=nn.testPerformance(dh.testingInputs, dh.testingOuputs, dh.testingSetSize);
+    	double performance=nn.testPerformance(dh.gettestingInputs(), dh.gettestingOutputs(), dh.getTestingSetSize());
     	System.out.println("(Sum of errors)^2 * (-1) = "+performance);
     	
     	
     	//get result from one specific input array
-    	double results[]=nn.feedforward(dh.testingInputs[34]);
+    	double results[]=nn.feedforward(dh.gettestingInputs()[34]);
     	
     	
     	// ==== EXPORT AND IMPORT the Network ====
@@ -73,7 +73,7 @@ public class Main {
     	anotherNN.loadWeights(fm.loadWeightsFrom("weights.txt", dna2));
     	
     	//check that the performance is  the same as before and cheer
-    	double perf2=anotherNN.testPerformance(dh.testingInputs, dh.testingOuputs, dh.testingSetSize);
+    	double perf2=anotherNN.testPerformance(dh.gettestingInputs(), dh.gettestingOutputs(), dh.getTestingSetSize());
     	System.out.println("performance is still "+perf2 + " hurray!");
     	    	
 
