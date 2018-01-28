@@ -123,7 +123,7 @@ public class FileManager {
 	    
 	    //HLAYERSIZE save as comma delimited  3,4,5,6
 	    String stringList="";
-	    for(int i=0; i<dna.hLayerSize.length-1; i++) stringList=dna.hLayerSize[i]+",";
+	    for(int i=0; i<dna.hLayerSize.length-1; i++) stringList=stringList+dna.hLayerSize[i]+",";
 	    //last one no comma
 	    stringList=stringList+dna.hLayerSize[dna.hLayerSize.length-1];
 	    props.setProperty("Structure", stringList);
