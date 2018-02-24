@@ -4,32 +4,28 @@ import java.util.Arrays;
 
 public class DNA {
 	
-	//input and output layers
+	//structure
 	private int inputSize;
-	public int outputSize;
+	private int outputSize;
+	private int [] hLayerSize;
 	
 	//input mask (boolean)
-	public boolean inputSelector[];
+	private boolean inputSelector[];
 	
-	//hidden layer
-	public int [] hLayerSize;
 	
-	//neuron parameters
+	//other parameters
 	public boolean recursive;
 	public double learningRate;
 	
-	//mutation parameters
-	public int trainingEpochs;
 	public boolean mutableStructure=true;
 	public boolean mutableLearningRate=true;
 	public boolean mutableInputSelector=true;
 	
-
+	
 	public DNA (int inputSize, int outputSize){
 		
 		//default values		
 		learningRate = 0.04; 
-		trainingEpochs = 500;
 		this.inputSize =inputSize;
 		this.outputSize=outputSize;
 		
@@ -45,16 +41,33 @@ public class DNA {
 
 	}//end constructor
 	
+	//structure GET/SET
 	public void setStructure(int[]hLayerSize){		
 		this.hLayerSize=Arrays.copyOf(hLayerSize, hLayerSize.length);	
 	}
+
+	public  int [] getStructure() { return this.hLayerSize; }
 	
+	//InputMask  GET/SET
 	public void setInputSelector(boolean inputSelector[]){
 		this.inputSelector=Arrays.copyOf(inputSelector, inputSelector.length);
 	}
-		
+	
+	public boolean [] getInputSelector() 	{	return inputSelector;	}
+
+	//input and output SIZE  GET/SET
+	public int getOutputSize	()	{	return this.outputSize;		}
+	
+	public void setOutputSize (int outputSize) 	{	this.outputSize =outputSize;	}
+
+	public int getInputSize	()	{	return this.inputSize;		}
+	
+	public void setInputSize (int inputSize) 	{	this.inputSize =inputSize;	}
+
+	//other
+	
 	public int countNeurons(){
-		
+		//counts hidden + output
 		int neuronsCount=0;
 		for(int i=0; i<hLayerSize.length;i++)	neuronsCount=neuronsCount+hLayerSize[i];
 		neuronsCount=neuronsCount+this.outputSize;
@@ -63,7 +76,7 @@ public class DNA {
 	}
 	
 	public int countInputs(){
-		
+		//counts how many input the network has selected
 		int count=0;
 		for(int i=0; i< inputSelector.length;i++){
 			if(inputSelector[i]) count++;
@@ -74,9 +87,10 @@ public class DNA {
 	public void randomMutation(){
 		
 		//TODO set max and min values as parameters
-		
 		CustomRandom random = new CustomRandom();
+		
 		if(mutableLearningRate)	learningRate = learningRate+random.randomDoubleBetween(0.5,-0.5);
+		
 		if(mutableInputSelector){
 			for(int i=0; i<inputSelector.length; i++) {			
 				if(random.randomDoubleBetween(0, 1)>0.5)
@@ -96,21 +110,27 @@ public class DNA {
 	}//end randomMutation
 	
 	public void printDNA(){
-		System.out.println("Printing DNA === ");
+		
+		final int PRINTLIMIT = 20;
+		
+		System.out.println("Printing DNA ============ ");
 		System.out.println("Input Selection:");
-		for(int i=0; i<inputSelector.length;i++) {
+		for(int i=0; i<Math.min(PRINTLIMIT,inputSelector.length);i++) {
 			if (inputSelector[i])
 				System.out.print(" 1 |");
 			else
 				System.out.print(" 0 | ");	
+			
+			if(i==PRINTLIMIT-1)System.out.println("....");
 		}//end for
 		
 		System.out.println("");
-		System.out.println("LR: "+learningRate+"   EP: "+trainingEpochs+"  ");
+		System.out.println("LR: "+learningRate);
 		System.out.print("Structure:");
 		for(int s=0; s<hLayerSize.length; s++)System.out.print(" " + hLayerSize[s]+" x ");
 		System.out.println("");
-		System.out.println("=== END DNA");;
+		System.out.println("Recursive: " + this.recursive);
+		System.out.println("END DNA ===============  ");;
 		
 	}
 	
@@ -121,23 +141,20 @@ public class DNA {
 		this.outputSize=original.outputSize;
 		
 		//inputmask
-		this.setInputSelector(original.inputSelector);
+		this.setInputSelector(original.getInputSelector());
 		
 		//hidden layer
-		this.setStructure(original.hLayerSize);
+		this.setStructure(original.getStructure());
 
 		//neuron
 		this.learningRate=original.learningRate;
 		this.recursive=original.recursive;
-		
-		//evolution
-		this.trainingEpochs=original.trainingEpochs;
 		this.mutableStructure=original.mutableStructure;
 		this.mutableLearningRate=original.mutableLearningRate;
 		this.mutableInputSelector=original.mutableInputSelector;
 
 	}
 	
+
 	
-	
-}
+}//endClass

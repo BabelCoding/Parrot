@@ -10,9 +10,9 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-		//Parrot Example
+		//Change path 
 		
-		String  csvPath = "E:\\Desktop\\test7.csv";
+		String  csvPath = "C:\\path\\to\\testFile\\test7.csv";
 		
         //load dataset
 		DataHolder dh;
@@ -42,13 +42,16 @@ public class Main {
     	//initialise Network
     	NeuralNetwork nn = new NeuralNetwork(dna); 	
     	
-    	//train the network: 15000 epochs on the trainingSet specified before
+    	//test the network with the data provided before or from any other data source (inputs[][], ouputs[][], records)
+       	double performance=nn.testPerformance(dh.gettestingInputs(), dh.gettestingOutputs(), dh.getTestingSetSize());
+       	System.out.println("Measuring performance before training");
+    	System.out.println("(Sum of errors)^2 * (-1) = " + performance);
+    	
+    	//train the network: 15000 iterations on the trainingSet
     	System.out.println("Now training...");
     	nn.train(15000, dh);
     	
-    
-    	//test the network with the data provided before or from any other data source (inputs[][], ouputs[][], records)
-    	double performance=nn.testPerformance(dh.gettestingInputs(), dh.gettestingOutputs(), dh.getTestingSetSize());
+    	performance=nn.testPerformance(dh.gettestingInputs(), dh.gettestingOutputs(), dh.getTestingSetSize());
     	System.out.println("(Sum of errors)^2 * (-1) = "+performance);
     	
     	
@@ -66,6 +69,8 @@ public class Main {
     	
     	
     	//how to reload the DNA
+    	System.out.println("Importing Neural Network and weights values...");
+
     	DNA dna2 = fm.loadDNAFrom("dna.txt");
     	NeuralNetwork anotherNN = new NeuralNetwork(dna2);
     	

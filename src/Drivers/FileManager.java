@@ -38,7 +38,6 @@ public class FileManager {
 		    String tempS= props.getProperty("Structure");
 		    String learningRateS = props.getProperty("LearningRate");
 		    String recursiveS = props.getProperty("Recursive");
-		    String traningEpocheS = props.getProperty("TraningEpoches");
 		    String mutableStructureS = props.getProperty("MutableStructure");
 		    String mutableLearningRateS = props.getProperty("MutableLearningRate");
 		    String mutableInputSelectorS = props.getProperty("MutableInputSelector");   
@@ -65,7 +64,6 @@ public class FileManager {
 		    //other properties
 		    dnafromfile.recursive=this.parseBool(recursiveS);
 		    dnafromfile.learningRate=Double.parseDouble(learningRateS);
-		    dnafromfile.trainingEpochs=Integer.parseInt(traningEpocheS);
 		    dnafromfile.mutableStructure=this.parseBool(mutableStructureS);
 		    dnafromfile.mutableLearningRate=this.parseBool(mutableLearningRateS);
 		    dnafromfile.mutableInputSelector=this.parseBool(mutableInputSelectorS);
@@ -74,7 +72,7 @@ public class FileManager {
 		    
 		} catch (FileNotFoundException ex) {
 		    // file does not exist
-			System.out.print("No Champion config found");
+			System.out.print("No dna config found");
 			return null;
 		} catch (IOException ex) {
 			return null;
@@ -104,18 +102,16 @@ public class FileManager {
 
 	public void saveDNAas(String filename, DNA dna) throws IOException{
 		
-		System.out.println("Saving DNA to file...");
 		
 		//save DNA
 		File configFile = new File(filename);
 		 		
 	    Properties props = new Properties();
 
-	    props.setProperty("InputSize", String.valueOf(dna.inputSelector.length));
-	    props.setProperty("OutputSize", String.valueOf(dna.outputSize));
+	    props.setProperty("InputSize", String.valueOf(dna.getInputSelector().length));
+	    props.setProperty("OutputSize", String.valueOf(dna.getOutputSize()));
 	    props.setProperty("LearningRate", String.valueOf(dna.learningRate));
 	    props.setProperty("Recursive", (dna.recursive)? "1":"0");
-	    props.setProperty("TraningEpoches", String.valueOf(dna.trainingEpochs));
 	    props.setProperty("MutableStructure", (dna.mutableStructure)? "1":"0");
 	    props.setProperty("MutableLearningRate", (dna.mutableLearningRate)? "1":"0");
 	    props.setProperty("MutableInputSelector", (dna.mutableInputSelector)? "1":"0");
@@ -123,20 +119,20 @@ public class FileManager {
 	    
 	    //HLAYERSIZE save as comma delimited  3,4,5,6
 	    String stringList="";
-	    for(int i=0; i<dna.hLayerSize.length-1; i++) stringList=stringList+dna.hLayerSize[i]+",";
+	    for(int i=0; i<dna.getStructure().length-1; i++) stringList=stringList+dna.getStructure()[i]+",";
 	    //last one no comma
-	    stringList=stringList+dna.hLayerSize[dna.hLayerSize.length-1];
+	    stringList=stringList+dna.getStructure()[dna.getStructure().length-1];
 	    props.setProperty("Structure", stringList);
 	    
 	    //INPUTSELECTOR as comma delimited 1,1,1,0,1
 	    stringList="";
-	    for(int i=0; i<dna.inputSelector.length; i++){	
-	    	if (dna.inputSelector[i])
+	    for(int i=0; i<dna.getInputSelector().length; i++){	
+	    	if (dna.getInputSelector()[i])
 	    		stringList=stringList+"1";
 	    	else
 	    		stringList=stringList+"0";
 	    	
-	    	if(i<dna.inputSelector.length-1) 
+	    	if(i<dna.getInputSelector().length-1) 
 	    		stringList=stringList+",";
 	    	
 		}//end for	    	
@@ -157,7 +153,7 @@ public class FileManager {
 		try {
 			fw = new FileWriter(filename);
 			bw = new BufferedWriter(fw);				
-			bw.write(nn.saveWeights());
+			bw.write(nn.exportWeights());
 		}catch (IOException e) {e.printStackTrace();}
 			
 		finally {
@@ -194,7 +190,7 @@ public class FileManager {
 				
 				//catch errors
 				if(itemsCount<inputCount+outputCount){
-					System.out.print("You've declared a wrong number of Inputs or Outputs");
+					System.out.print("You've declared a wrong number of Input or Output");
 					br.close();
 					return null;
 				}//end if error
