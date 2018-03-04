@@ -57,7 +57,10 @@ public class Neuron {
 		return 1/(1+Math.exp(-sum));	
 	}//end activation function
 	
-
+	public void calculateDelta(double error){
+		//necessary for echoTest (back-propagation without neural training)
+		delta=state*(1-state)*error;	
+	}
 	
 	public void train(double inputs[],double error){
 		
