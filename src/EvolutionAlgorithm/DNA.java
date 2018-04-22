@@ -26,6 +26,7 @@ public class DNA {
 		
 		//default values		
 		learningRate = 0.04; 
+		recursive=false;
 		this.inputSize =inputSize;
 		this.outputSize=outputSize;
 		

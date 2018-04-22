@@ -150,107 +150,79 @@ import EvolutionAlgorithm.DNA;
         	for (int n=0;n<outputLayer.length;n++) outputLayer[n].train(Hmatrix[dna.getStructure().length-1], error[n]);																											//CurrentH
             
          
-        	//for each layer starting from LAST one
+        	//for each layer (starting from LAST one)
             for (int l=dna.getStructure().length-1; l>=0;l-- ) { 
-                
-                //last layer takes the error from the output layer
-                if (l==dna.getStructure().length-1) {
-            		            	
-                	//for each neuron
-                	for(int n=0; n<dna.getStructure()[l];n++){
-                		//collect error for each neuron
-                		double aggregatedError=0; 
-            			for (int o=0;o<outputLayer.length;o++){
-            				aggregatedError = aggregatedError+ outputLayer[o].transmitError(n);
-            			}
-            		//start the training
-            		hiddenLayer[l][n].train(Hmatrix[l-1], aggregatedError);
-            		}//end for each neuron
+            	//for each neuron
+            	for(int n=0; n<dna.getStructure()[l];n++){
             		
-                }else{
-                	
-            	   	//on any other layer  aggregate the error of the FOLLOWING layer            	
-	                //for each neuron 
-                	for(int n=0; n<dna.getStructure()[l];n++) { 
-                		//collect error for each neuron 
-	            		double aggregatedError=0;
-		                for (int i=0; i<dna.getStructure()[l+1];i++){  
-		                	aggregatedError=aggregatedError+ hiddenLayer[l+1][i].transmitError(n);
-		                }
-	                
-		              	//any layer but the fist takes the previous layer as input
-		                if (l>0) 
-		                	hiddenLayer[l][n].train( Hmatrix[l-1], aggregatedError);
-		                else 
-		                	// first layer I use the external inputs for the training	
-		                	hiddenLayer[l][n].train(this.selectInputs(inputVector), aggregatedError);
-	           
-                	}//end for each neuron
-            	}//end else (any other layer)																										
+            		//1 - AGGREGATE ERROR
+            		double aggregatedError=0; 
+		            //if on the last layer then...
+		            if (l==dna.getStructure().length-1) {
+		        		//...collect error from each output neuron... 
+		    			for (int o=0;o<outputLayer.length;o++)	aggregatedError = aggregatedError+ outputLayer[o].transmitError(n);
+		            }else{
+		            	//...on any other layer  aggregate the error FROM the FOLLOWING layer            	       
+		                for (int i=0; i<dna.getStructure()[l+1];i++)	aggregatedError=aggregatedError+ hiddenLayer[l+1][i].transmitError(n);  
+		            }//end else (any other layer)	
+		            
+		            
+		            //2 - FEED  INPUT   
+	              	//any layer but the fist takes the previous layer as input
+	                if (l>0) 
+	                	hiddenLayer[l][n].train( Hmatrix[l-1], aggregatedError);
+	                else 
+	                	// whereas the first layer takes the external inputVector for the training	
+	                	hiddenLayer[l][n].train(this.selectInputs(inputVector), aggregatedError);
+           
+                }//end for each neuron																									
             }//end for each layer         
         }// ============= END BACKPROPAGATION =============
-     
-     
-     private double[] echoTest(double[] inputVector, double []target){
+       
+     public double[] echoTest(double[] inputVector, double []target){
  	 	 //** The echoTest function is necessary for Generative Adversarial Networks (GANs) ***  
-    	 //this function studies the importance that each input value has in achieving a specific target. It's propagates the error (distance from the target)
-    	 //from the output layer backwards: so it's like the backpropagation but without training any neurons. The propagation will flow through the whole network
+    	 //this function studies the importance of each input value in achieving a specific target. It propagates the error 
+    	 //from the output layer backwards: so it's like the backpropagation but without any training on neurons. The propagation will flow through the whole network
     	 //and once it reaches the input layer it returns the error contribution of each input value. 
     	 
  	 	//output and error vectors
      	double[] guess =new double[outputLayer.length];
  		double[] error=new double[outputLayer.length];
  		double aggregatedError;
- 		
      	guess=this.feedforward(inputVector);
      	
      	//calculate error
-     	for (int n=0;n<outputLayer.length;n++) error[n]=target[n]-guess[n];
+     	for (int n=0;n<outputLayer.length;n++){
+     		error[n]=target[n]-guess[n];
+     		//updating delta Value in each neuron (necessary prior to transmitError) 
+     		outputLayer[n].calculateDelta(error[n]);
+     	}
                    
-         //updating delta Value in each neuron (necessary prior to transmitError) 
-     	for (int n=0;n<outputLayer.length;n++) outputLayer[n].calculateDelta(error[n]);																											//CurrentH
-         
-      
      	//for each layer starting from LAST one
          for (int l=dna.getStructure().length-1; l>=0;l-- ) { 
-             
-             //last layer takes the error from the output layer
-             if (l==dna.getStructure().length-1) {
-         		            	
-             	//for each neuron
-             	for(int n=0; n<dna.getStructure()[l];n++){
-             		//collect error for each neuron
-             		aggregatedError=0; 
-         			for (int o=0;o<outputLayer.length;o++){
-         				aggregatedError = aggregatedError+ outputLayer[o].transmitError(n);
-         			}
-         		//start the training
-         		hiddenLayer[l][n].calculateDelta(aggregatedError);
-         		}//end for each neuron
-         		
-             }else{
-             	
-         	   	//on any other layer  aggregate the error of the FOLLOWING layer            	
-	                //for each neuron 
-             	for(int n=0; n<dna.getStructure()[l];n++) { 
-             		//collect error for each neuron 
-	            		aggregatedError=0;
-		                for (int i=0; i<dna.getStructure()[l+1];i++){  
-		                	aggregatedError=aggregatedError+ hiddenLayer[l+1][i].transmitError(n);
-		                }
-	          
-		                hiddenLayer[l][n].calculateDelta(aggregatedError);
+        	//for each neuron
+          	for(int n=0; n<dna.getStructure()[l];n++){
+          		
+          		// 1 - AGGREGATE ERROR
+          		aggregatedError=0; 
+	             //if on the last layer...
+	             if (l==dna.getStructure().length-1) {            
+             		//aggregate the error from each neuron of the output layer
+         			for (int o=0;o<outputLayer.length;o++) aggregatedError = aggregatedError+ outputLayer[o].transmitError(n);
+	             }else{
+	            	 //on any other layer  aggregate the error of the FOLLOWING layer       
+	            	 for (int i=0; i<dna.getStructure()[l+1];i++)	aggregatedError=aggregatedError+ hiddenLayer[l+1][i].transmitError(n);
+	         	 }//end else (any other layer)
+	             //2 - CALCULATE DELTA
+		         hiddenLayer[l][n].calculateDelta(aggregatedError);
 		     
-             	}//end for each neuron
-         	}//end else (any other layer)																										
+             }//end for each neuron  																									
          }//end for each layer
          
-         //all delta have been recalculated, now I can export the sensitivity values (echo result) for each input
-         
-         double [] echoResults = new double [inputVector.length];
+         //all delta have been recalculated, now I can export the sensitivity values (echo result) for each input 
+        double [] echoResults = new double [inputVector.length];
         
-     	for (int i=0;i<inputVector.length;i++){
-     		
+     	for (int i=0;i<inputVector.length;i++){	
      		aggregatedError=0; 
 			for (int n=0;n<this.dna.getStructure()[0];n++){
 				aggregatedError = aggregatedError+ hiddenLayer[0][n].transmitError(i);
@@ -260,9 +232,8 @@ import EvolutionAlgorithm.DNA;
         
      	return echoResults;
          
-     }// ============= END BACKPROPAGATION =============
-     
-     
+     }// ============= END ECHO TEST =============
+         
      public void train(double epochs, DataHolder dh){
     	 
     	//TRAIN

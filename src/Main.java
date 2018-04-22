@@ -11,8 +11,8 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		//Change path 
-		
-		String  csvPath = "C:\\path\\to\\testFile\\test7.csv";
+		//String  csvPath = "C:\\path\\to\\testFile\\test7.csv";
+		String  csvPath = "E:\\Desktop\\test7.csv";
 		
         //load dataset
 		DataHolder dh;
@@ -28,9 +28,9 @@ public class Main {
     	DNA dna = new DNA(14,10);
     	
     	//choose hidden layer structure and learning rate
-    	int [] structure = new int[2];
+    	int [] structure = new int[1];
     	structure[0]=20;
-    	structure[1]=15;
+    	//structure[1]=15;
     	dna.setStructure(structure);
     	dna.recursive=false; 
     	dna.learningRate=0.002;
@@ -70,7 +70,6 @@ public class Main {
     	
     	//how to reload the DNA
     	System.out.println("Importing Neural Network and weights values...");
-
     	DNA dna2 = fm.loadDNAFrom("dna.txt");
     	NeuralNetwork anotherNN = new NeuralNetwork(dna2);
     	

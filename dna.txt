@@ -1,9 +1,9 @@
 #champion settings
-#Sat Feb 24 15:14:51 GMT 2018
+#Sun Apr 15 11:34:41 BST 2018
 OutputSize=10
 MutableLearningRate=1
 Recursive=0
-Structure=20,15
+Structure=20
 MutableInputSelector=1
 InputSize=14
 inputSelector=1,1,1,1,1,1,1,1,1,1,1,1,1,1

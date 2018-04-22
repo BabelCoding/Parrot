@@ -59,7 +59,11 @@ public class Neuron {
 	
 	public void calculateDelta(double error){
 		//necessary for echoTest (back-propagation without neural training)
-		delta=state*(1-state)*error;	
+		
+		delta=error;
+		
+		//necessary since  transmitError propagates on shadowweights
+		for (int i=0;i<this.connections;i++) shadoweights[i]=weights[i];
 	}
 	
 	public void train(double inputs[],double error){
@@ -80,8 +84,7 @@ public class Neuron {
 		weights[this.connections+1]=weights[this.connections+1]+shadowState*delta*learningRate;
 				
 	}//end train
-	
-	
+		
 	public double transmitError(int i){
 		//this function transmits the error of the last training iteration to the upper layer
 		double error;
