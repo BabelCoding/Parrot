@@ -168,7 +168,7 @@ public class FileManager {
 	
 	public DataHolder getDatafile(String filename, int inputCount, int outputCount, int trainingSetSize){
 		
-		int records = this.countRecords(filename);
+		int records = this.countRecords(filename)-1;
 				
 		//records
 		double [][] trainingInputs = new double [trainingSetSize][inputCount];

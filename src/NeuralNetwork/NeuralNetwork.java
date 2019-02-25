@@ -235,14 +235,13 @@ import EvolutionAlgorithm.DNA;
      }// ============= END ECHO TEST =============
          
      public void train(double epochs, DataHolder dh){
-    	 
     	//TRAIN
- 		for (int epoch=1;epoch<=epochs;epoch++){		
- 			for (int record=0; record<dh.trainingSetSize; record++){
+ 		for (int epoch=1;epoch<=epochs;epoch++){	
+ 	    	//System.out.println("Training..."+epoch);
+ 	    	for (int record=0; record<dh.trainingSetSize; record++){
  					this.backPropagation(dh.trainingInputs[record], dh.trainingOuputs[record]);
  			}//end for each records	
  		}//end for each epoque
-    	 
      }//end train
 
      public double testPerformance(double [][] testInputs,double [][] testOutputs, int records){
